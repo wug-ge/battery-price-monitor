@@ -1,5 +1,7 @@
+import { Request } from 'express'
 import { getDataSource } from '../data-source'
 import { Battery } from '../models/Battery'
+import { calculateGravimetricEnergyDensity, calculateVolumetricEnergyDensityOfCylinder } from '../services/MathHelper'
 
 export class BatteryController {
   private batteryRepository = getDataSource().getRepository(Battery)
@@ -8,20 +10,20 @@ export class BatteryController {
     return await this.batteryRepository.find()
   }
 
-  async getAllBatteriesByEnergyDensity() {
+  async getAllBatteriesByEnergyDensity(req: Request) {
     const batteries = await this.batteryRepository.find()
 
-    return batteries.sort((a, b) => {
-      const energyDensityA = a.typCapacity / a.weight
-      const energyDensityB = b.typCapacity / b.weight
-      return energyDensityB - energyDensityA
-    }).map(battery => {
+    const batteriesWithEnergyDensity = batteries.map(battery => {
       return {
-        id: battery.id,
-        brand: battery.brand,
-        model: battery.model,
-        energyDensity: battery.typCapacity / battery.weight
+        ...battery,
+        volumetricEnergyDensity: calculateVolumetricEnergyDensityOfCylinder(battery.height, battery.diameter / 2, battery.typCapacity, 3.6),
+        gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, 3.6),
       }
+    })
+
+    let sort: 'gravimetricEnergyDensity' | 'volumetricEnergyDensity' = req.query.sort === 'gravimetric' ? 'gravimetricEnergyDensity' : 'volumetricEnergyDensity'
+    return batteriesWithEnergyDensity.sort((a, b) => {
+      return b[sort] - a[sort]
     })
   }
 }

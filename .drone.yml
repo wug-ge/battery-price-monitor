@@ -45,8 +45,7 @@ steps:
       from_secret: docker_username
     DOCKER_PASSWORD:
       from_secret: docker_password
-    
-    
+
     # DB
     DB_HOST:
       from_secret: DB_HOST
