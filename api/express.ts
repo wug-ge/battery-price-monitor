@@ -25,7 +25,6 @@ function setupDefaultRoutes(app: Application) {
   app.get("/hostname", (req, res) => {
     res.json({ hostname: os.hostname() });
   });
-  console.log(app._router.stack);
 }
 
 function setupRouter(app: Application) {

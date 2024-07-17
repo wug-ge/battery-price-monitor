@@ -1,0 +1,68 @@
+kind: pipeline
+name: default
+
+workspace:
+  path: /data/drone
+
+steps:
+- name: publish_api
+  image: plugins/docker
+  settings:
+    repo: wugge/battery-price-monitor-api
+    tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    dockerfile: 'docker/api/Dockerfile'
+  when:
+    branch:
+      - main
+- name: publish_frontend
+  image: plugins/docker
+  settings:
+    repo: wugge/battery-price-monitor-frontend
+    tags: [ "${DRONE_COMMIT_SHA:0:7}","latest" ]
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    dockerfile: 'docker/frontend/Dockerfile'
+    context: 'frontend'
+  when:
+    branch:
+      - main
+- name: deploy
+  image: docker/compose
+  when:
+    branch:
+      - main
+  volumes:
+    - name: docker_sock
+      path: /var/run/docker.sock
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+    
+    
+    # DB
+    DB_HOST:
+      from_secret: DB_HOST
+    DB_NAME:
+      from_secret: DB_NAME
+    DB_USER:
+      from_secret: DB_USER
+    DB_PASSWORD:
+      from_secret: DB_PASSWORD
+  commands:
+  - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+  - docker-compose -f docker-compose.prod.yml down && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up -d
+  depends_on:
+    - publish_api
+    - publish_frontend
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
