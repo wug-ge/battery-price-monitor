@@ -7,9 +7,9 @@ export const Routes: RoutesType = [{
   action: 'getAllBatteries',
 }, {
   method: 'get',
-  route: '/batteries/energy-density',
+  route: '/batteries/stats',
   controller: BatteryController,
-  action: 'getAllBatteriesByEnergyDensity',
+  action: 'getAllBatteriesWitStats',
 }]
 
 

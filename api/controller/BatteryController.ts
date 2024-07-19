@@ -1,28 +1,25 @@
 import { Request } from 'express'
 import { getDataSource } from '../data-source'
 import { Battery } from '../models/Battery'
-import { calculateGravimetricEnergyDensity, calculateVolumetricEnergyDensityOfCylinder } from '../services/MathHelper'
+import { BatteryPrice } from '../models/BatteryPrice'
+import { addLastPriceToBatteries, addStatsToBatteries } from '../services/BatteryService'
 
 export class BatteryController {
   private batteryRepository = getDataSource().getRepository(Battery)
+  private batteryPriceRepository = getDataSource().getRepository(BatteryPrice)
 
   async getAllBatteries() {
     return await this.batteryRepository.find()
   }
 
-  async getAllBatteriesByEnergyDensity(req: Request) {
-    const batteries = await this.batteryRepository.find()
+  async getAllBatteriesWitStats(req: Request) {
+    let batteries = await this.batteryRepository.find()
 
-    const batteriesWithEnergyDensity = batteries.map(battery => {
-      return {
-        ...battery,
-        volumetricEnergyDensity: calculateVolumetricEnergyDensityOfCylinder(battery.height, battery.diameter / 2, battery.typCapacity, 3.6),
-        gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, 3.6),
-      }
-    })
+    batteries = await addLastPriceToBatteries(batteries, this.batteryPriceRepository)
+    const batteriesWithStats = addStatsToBatteries(batteries)
 
-    let sort: 'gravimetricEnergyDensity' | 'volumetricEnergyDensity' = req.query.sort === 'gravimetric' ? 'gravimetricEnergyDensity' : 'volumetricEnergyDensity'
-    return batteriesWithEnergyDensity.sort((a, b) => {
+    let sort: 'gravimetricEnergyDensity' | 'volumetricEnergyDensity' | 'whPerEuro' | 'whPerEuroReduced' = req.query.sort as any || 'volumetricEnergyDensity'
+    return batteriesWithStats.sort((a, b) => {
       return b[sort] - a[sort]
     })
   }

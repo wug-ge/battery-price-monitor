@@ -6,6 +6,9 @@ export class BatteryPrice {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ type: 'int' })
+  batteryId!: number;
+
   @ManyToOne(() => Battery, battery => battery.batteryPrices)
   battery!: Battery;
 

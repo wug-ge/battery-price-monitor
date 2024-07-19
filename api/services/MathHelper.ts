@@ -32,3 +32,18 @@ export function calculateGravimetricEnergyDensity(
   const totalEnergy = ((mAh / 1000) * voltage)
   return totalEnergy / massInKg;
 }
+
+/**
+ * 
+ * @param price 
+ * @param mAh 
+ * @param voltage 
+ * @returns Wh per Euro
+ */
+export function calculateWhPerEuro(price: number, mAh: number, voltage: number) {
+  if (price === 0) {
+    return 0
+  }
+  const totalEnergy = ((mAh / 1000) * voltage)
+  return totalEnergy / price
+}

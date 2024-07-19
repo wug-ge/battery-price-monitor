@@ -20,4 +20,6 @@ export class Battery {
 
   gravimetricEnergyDensity = 0;
   volumetricEnergyDensity = 0;
+  whPerEuro = 0;
+  whPerEuroReduced = 0;
 }
