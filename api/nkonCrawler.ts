@@ -2,16 +2,29 @@ import * as cheerio from "cheerio";
 import { Battery } from "./models/Battery";
 import { getDataSource } from "./data-source";
 import { BatteryPrice } from "./models/BatteryPrice";
+import { getSourcer } from "./services/SourcerService";
+import { isKeyOfBattery } from "./services/BatteryService";
+
+const NKON_SOURCER = "nkon"
 
 export async function initCrawling() {
   console.info("Starting crawling");
-  await getAllBatteries();
+  const allPages = [
+    `https://eu.nkon.nl/rechargeable/li-ion/18650-size.html`,
+    `https://eu.nkon.nl/rechargeable/li-ion/21700-20700-size.html`,
+    `https://eu.nkon.nl/rechargeable/li-ion/14500-16340.html`,
+    `https://eu.nkon.nl/rechargeable/li-ion/18350-18500-formaat.html`,
+    `https://eu.nkon.nl/rechargeable/li-ion/26650.html`,
+    `https://eu.nkon.nl/rechargeable/li-ion/overige-formaten.html`,
+  ]
+
+  for (const page of allPages) {
+    await getAllBatteries(page);
+  }
 }
 
-async function getAllBatteries() {
-  // replace later with all relevant pages
-  const all18650 = `https://eu.nkon.nl/rechargeable/li-ion/18650-size.html`;
-  const data = await fetch(all18650);
+async function getAllBatteries(page: string) {
+  const data = await fetch(page);
   const html = await data.text();
   const $ = cheerio.load(html);
   const batteries = $(".product-name > a");
@@ -45,6 +58,13 @@ async function saveNewBatteriesToDb(batteries: Battery[]) {
     if (!existingBattery) {
       existingBattery = await batteryRepository.save(battery);
     }
+
+    // update all fields here that got mapped wrong, might need to get updates regularly, scraped wrong and are empty,...
+    await batteryRepository.update(existingBattery.id, {
+      chemistry: battery.chemistry ? battery.chemistry : existingBattery.chemistry,
+      voltage: battery.voltage ? battery.voltage : existingBattery.voltage,
+    });
+
     battery.batteryPrices[0].battery = existingBattery;
     await batteryPriceRepository.save(battery.batteryPrices[0]);
   }
@@ -63,21 +83,28 @@ async function getBatteryFromLink(link: string): Promise<Battery> {
   battery.brand = $('#product-attribute-specs-table tr:contains("Brand") td').text().trim();
   battery.model = $('#product-attribute-specs-table tr:contains("Model") td').text().trim();
   battery.size = $('#product-attribute-specs-table tr:contains("Size") td').text().trim();
-  battery.chemistry = $('#product-attribute-specs-table tr:contains("Chemistry") td').text().trim();
-  battery.voltage = $('#product-attribute-specs-table tr:contains("Voltage") td').text().trim();
-  battery.minCapacity = parseFloat($('#product-attribute-specs-table tr:contains("Min. capacity") td').text().trim().replace(/,/g, '').replace(/\s/g, ''));
-  battery.typCapacity = parseFloat($('#product-attribute-specs-table tr:contains("Typ. capacity") td').text().trim().replace(/,/g, '').replace(/\s/g, ''));
+  battery.chemistry = $('#product-attribute-specs-table tr:contains("chemistry") td').text().trim();
+  battery.voltage = parseFloat($('#product-attribute-specs-table tr:contains("Voltage") td').text().trim().replace(/V/g, ''));
+  battery.minCapacity = $('#product-attribute-specs-table tr:contains("Min. capacity") td').length ? parseFloat($('#product-attribute-specs-table tr:contains("Min. capacity") td').text().trim().replace(/,/g, '').replace(/\s/g, '')) : 0;
+  battery.typCapacity = $('#product-attribute-specs-table tr:contains("Typ. capacity") td').length ? parseFloat($('#product-attribute-specs-table tr:contains("Typ. capacity") td').text().trim().replace(/,/g, '').replace(/\s/g, '')) : 0;
   battery.version = $('#product-attribute-specs-table tr:contains("version") td').text().trim();
   battery.dischargeCurrent = parseFloat($('#product-attribute-specs-table tr:contains("Discharge current") td').text().trim());
   battery.circuitProtection = $('#product-attribute-specs-table tr:contains("Circuit protection") td').text().trim();
   battery.height = parseFloat($('#product-attribute-specs-table tr:contains("Height") td').text().trim());
   battery.diameter = parseFloat($('#product-attribute-specs-table tr:contains("Diameter") td').text().trim());
 
+  Object.keys(battery).forEach((key: string) => {
+    if (Number.isNaN((battery as any)[key])) {
+      (battery as any)[key] = 0;
+    }
+  })
+
   const batteryPrice = new BatteryPrice();
   batteryPrice.price = parseFloat($('.price-box .price').text().trim().replace(/[^0-9.-]+/g, ''));
   if ($('.tier-prices li:last-child .price').length) {
     batteryPrice.priceReduced = parseFloat($('.tier-prices li:last-child .price').last().text().trim().replace(/[^0-9.-]+/g, ''));
   }
+  batteryPrice.sourcerId = (await getSourcer(NKON_SOURCER)).id
   battery.batteryPrices = [batteryPrice];
 
   return battery;

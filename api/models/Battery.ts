@@ -3,6 +3,8 @@ import { BatteryPrice } from "./BatteryPrice";
 
 @Entity({ name: 'batteries' })
 export class Battery {
+  [key: string]: string | number | BatteryPrice[] | undefined;
+
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -24,8 +26,8 @@ export class Battery {
   @Column({ type: 'varchar', length: 255 })
   chemistry!: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  voltage!: string;
+  @Column({ type: 'float' })
+  voltage!: number;
 
   @Column({ type: 'float' })
   minCapacity!: number;
@@ -47,6 +49,12 @@ export class Battery {
 
   @Column({ type: 'float' })
   diameter!: number;
+
+  @Column({ type: 'timestamp' })
+  createdAt!: string;
+
+  @Column({ type: 'timestamp' })
+  updatedAt!: string;
 
 
   @OneToMany(() => BatteryPrice, batteryPrice => batteryPrice.battery)

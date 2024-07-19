@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Battery } from "./Battery";
+import { Sourcer } from "./Sourcer";
 
 @Entity({ name: 'battery_prices' })
 export class BatteryPrice {
@@ -11,6 +12,12 @@ export class BatteryPrice {
 
   @ManyToOne(() => Battery, battery => battery.batteryPrices)
   battery!: Battery;
+
+  @ManyToOne(() => Sourcer, sourcer => sourcer.batteryPrices)
+  sourcer!: Sourcer;
+
+  @Column({ type: 'int' })
+  sourcerId!: number;
 
   @Column({ type: 'float' })
   price!: number;

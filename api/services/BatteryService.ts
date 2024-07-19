@@ -8,10 +8,10 @@ export function addStatsToBatteries(batteries: Battery[]) {
   return batteries.map(battery => {
     return {
       ...battery,
-      volumetricEnergyDensity: calculateVolumetricEnergyDensityOfCylinder(battery.height, battery.diameter / 2, battery.typCapacity, 3.6),
-      gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, 3.6),
-      whPerEuro: calculateWhPerEuro(battery.batteryPrices[0].price, battery.typCapacity, 3.6),
-      whPerEuroReduced: calculateWhPerEuro(battery.batteryPrices[0].priceReduced, battery.typCapacity, 3.6),
+      volumetricEnergyDensity: calculateVolumetricEnergyDensityOfCylinder(battery.height, battery.diameter / 2, battery.typCapacity, battery.voltage),
+      gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, battery.voltage),
+      whPerEuro: calculateWhPerEuro(battery.batteryPrices[0].price, battery.typCapacity, battery.voltage),
+      whPerEuroReduced: calculateWhPerEuro(battery.batteryPrices[0].priceReduced, battery.typCapacity, battery.voltage),
     }
   })
 }
@@ -29,4 +29,8 @@ export async function addLastPriceToBatteries(batteries: Battery[], batteryPrice
     battery.batteryPrices = [lastPrice || new BatteryPrice()]
     return battery
   }))
+}
+
+export function isKeyOfBattery(key: any): key is keyof Battery {
+  return key in Battery.prototype;
 }

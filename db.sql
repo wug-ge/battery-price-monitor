@@ -28,4 +28,19 @@ CREATE TABLE `battery_prices` (
   PRIMARY KEY (`id`),
   KEY `batteryId` (`batteryId`),
   CONSTRAINT `battery_prices_ibfk_1` FOREIGN KEY (`batteryId`) REFERENCES `batteries` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=910 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB AUTO_INCREMENT=910 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE sourcers(
+id INT auto_increment PRIMARY KEY,
+`name` VARCHAR(255) NOT NULL,
+createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW()
+);
+
+ALTER TABLE battery_prices ADD COLUMN `sourcerId` INT NOT NULL DEFAULT 1 REFERENCES sourcers(`id`) AFTER `batteryId`;
+
+ALTER TABLE batteries CHANGE COLUMN `created_at` `createdAt` TIMESTAMP NOT NULL DEFAULT NOW();
+ALTER TABLE batteries CHANGE COLUMN `updated_at` `updatedAt` TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW();
+
+ALTER TABLE `batteries` CHANGE COLUMN `voltage` `voltage` float NULL;
