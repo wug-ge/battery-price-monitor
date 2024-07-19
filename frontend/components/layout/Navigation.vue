@@ -28,16 +28,16 @@
       >
         <div class="text-sm md:flex-grow">
           <nuxt-link
-            to="/projects"
+            to="/battery-finder"
             class="border-x border-accent-1 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white px-2"
           >
-            Projects
+            Battery Finder
           </nuxt-link>
           <nuxt-link
-            to="/blog"
+            to="/download"
             class="border-r border-accent-1 px-2 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white"
           >
-            Blog
+            Download Data
           </nuxt-link>
         </div>
         <div>

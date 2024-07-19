@@ -30,17 +30,22 @@ use([
 
 const data = computed(() => {
   return batteries.value.map((battery) => {
-    return [
-      Math.round(battery.volumetricEnergyDensity),
-      Math.round(battery.gravimetricEnergyDensity),
-    ];
+    return {
+      name: `${battery.brand} ${battery.model}`,
+      value: [
+        Math.round(battery.volumetricEnergyDensity),
+        Math.round(battery.gravimetricEnergyDensity),
+      ],
+    };
   });
 });
 
 const option = ref({
   tooltip: {
-    trigger: "axis",
-    axisPointer: { type: "cross" },
+    trigger: "item",
+    formatter: function (params: any) {
+      return params.data.name;
+    },
   },
   color: ["#5577FF"],
   title: {
@@ -58,7 +63,7 @@ const option = ref({
     name: "Wh/kg",
     nameLocation: "middle",
     nameRotate: 90,
-    nameTextStyle: { padding: [0, 0, 20, 0] }, 
+    nameTextStyle: { padding: [0, 0, 20, 0] },
   },
   series: [
     {
