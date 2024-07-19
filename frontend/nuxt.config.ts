@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     transpile: [  
       /echarts/,
       'vue-echarts',
+      'resize-detector', // needed for echarts, see https://github.com/nuxt/nuxt/issues/14553#issuecomment-1934042981
     ],
   },
 
