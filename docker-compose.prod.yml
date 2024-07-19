@@ -29,7 +29,7 @@ services:
       - "traefik.http.routers.wugge-api.middlewares=wugge-api"
       - "traefik.http.middlewares.wugge-api.replacepathregex.regex=^/api/(.*)"
       - "traefik.http.middlewares.wugge-api.replacepathregex.replacement=/$$1"
-  db:
+  bpm-db:
     image: mariadb:latest
     ports:
       - ${PUBLIC_DB_PORT:-3886}:3306
