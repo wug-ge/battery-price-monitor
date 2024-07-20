@@ -1,13 +1,13 @@
 <template>
   <header class="bg-primary flex mt-4">
-    <div class="container bg-accent-1 rounded-xl p-4">
-      <div class="flex">
-        <div class="rounded-xl bg-primary w-72 h-64 self-center">
+    <div class="container bg-accent-1 rounded-xl p-4 m-2 md:m-0">
+      <div class="md:flex">
+        <div class="hidden md:inline-block rounded-xl bg-primary w-72 h-64 self-center text-center">
           <logo />
         </div>
         <div>
-          <div class="text-primary pl-4">
-            <h1 class="text-primary text-6xl max-w-3xl font-thin">
+          <div class="text-primary md:pl-4">
+            <h1 class="text-primary text-4xl md:text-6xl max-w-3xl font-thin">
               Compare and find the best batteries for your project
             </h1>
             <br />
