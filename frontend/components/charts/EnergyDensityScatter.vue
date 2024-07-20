@@ -33,7 +33,7 @@ const batteries = computed(() => {
   if (props.filter) {
     batteries = props.filter(batteries);
   }
-  return batteries
+  return batteries;
 });
 
 use([
@@ -45,7 +45,7 @@ use([
 ]);
 
 const data = computed(() => {
-  return batteries.value.map((battery) => {
+  return batteries.value.map((battery: Battery) => {
     return {
       name: `${battery.brand} ${battery.model}`,
       value: [
@@ -54,6 +54,27 @@ const data = computed(() => {
       ],
     };
   });
+});
+
+// zoom into chart to have better view of data
+watch(storeBatteries, () => {
+  option.value.xAxis.min =
+    Math.round(
+      Math.min(
+        ...batteries.value.map((b: Battery) => b.volumetricEnergyDensity)
+      ) / 100
+    ) * 100;
+});
+
+
+// zoom into chart to have better view of data
+watch(storeBatteries, () => {
+  option.value.yAxis.min =
+    Math.round(
+      Math.min(
+        ...batteries.value.map((b: Battery) => b.gravimetricEnergyDensity)
+      ) / 100
+    ) * 100;
 });
 
 const option = ref({
@@ -73,7 +94,7 @@ const option = ref({
     name: "Wh/l",
     nameLocation: "middle",
     nameTextStyle: { padding: [10, 0, 0, 0] },
-    // min: Math.round((Math.min(...batteries.value.map(b => b.volumetricEnergyDensity)) / 100)) * 100 - 100,
+    min: 0
   },
   yAxis: {
     type: "value",
@@ -81,10 +102,11 @@ const option = ref({
     nameLocation: "middle",
     nameRotate: 90,
     nameTextStyle: { padding: [0, 0, 20, 0] },
+    min: 0
   },
   series: [
     {
-      symbolSize: 5,
+      symbolSize: 10,
       data: data,
       type: "scatter",
     },

@@ -47,13 +47,13 @@
             class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 md:mt-0"
             >Contact</a
           >
-          <index-contact-modal
+          <!--<index-contact-modal
             :hidden="!showContactModal"
             @close="showContactModal = false"
           >
             <template #header> Contact me </template>
             <index-contact-form />
-          </index-contact-modal>
+          </index-contact-modal>-->
         </div>
       </div>
     </nav>

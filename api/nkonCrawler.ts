@@ -60,7 +60,11 @@ async function saveNewBatteriesToDb(batteries: Battery[]) {
     }
 
     // update all fields here that got mapped wrong, might need to get updates regularly, scraped wrong and are empty,...
+    if (!battery.model) {
+      console.log("###########", battery.model)
+    }
     await batteryRepository.update(existingBattery.id, {
+      model: battery.model ? battery.model : existingBattery.model,
       chemistry: battery.chemistry ? battery.chemistry : existingBattery.chemistry,
       voltage: battery.voltage ? battery.voltage : existingBattery.voltage,
     });
@@ -81,7 +85,10 @@ async function getBatteryFromLink(link: string): Promise<Battery> {
   battery.eanGtin = $('#product-attribute-specs-table tr:contains("EAN") td').text().trim();
   battery.weight = parseFloat($('#product-attribute-specs-table tr:contains("Weight") td').text().trim());
   battery.brand = $('#product-attribute-specs-table tr:contains("Brand") td').text().trim();
-  battery.model = $('#product-attribute-specs-table tr:contains("Model") td').text().trim();
+  battery.model = $('#product-attribute-specs-table tr:contains("Model") td').text().trim() || $(".product-name").text().trim().split(' ').length > 1 ? $(".product-name").text().trim().split(' ')[1] : '';
+  if (!battery.model) {
+    console.log($(".product-name").text().trim().split(' ')[1])
+  }
   battery.size = $('#product-attribute-specs-table tr:contains("Size") td').text().trim();
   battery.chemistry = $('#product-attribute-specs-table tr:contains("chemistry") td').text().trim();
   battery.voltage = parseFloat($('#product-attribute-specs-table tr:contains("Voltage") td').text().trim().replace(/V/g, ''));

@@ -52,6 +52,10 @@ const data = computed(() => {
   return batteries.value.map(b => b.whPerEuro)
 });
 
+watch(batteries, () => {
+  option.value.xAxis.data = batteries.value.map(b => `${b.brand} ${b.model}`)
+})
+
 const option = ref({
   tooltip: {
     trigger: 'axis',
@@ -61,12 +65,6 @@ const option = ref({
     }
   },
   legend: {},
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
   color: ["#5577FF"],
   title: {
     text: props.title,
@@ -77,7 +75,6 @@ const option = ref({
     name: "Cell",
     nameLocation: "middle",
     data: batteries.value.map(b => `${b.brand} ${b.model}`),
-    nameRotate: 180,
     nameTextStyle: { padding: [10, 0, 0, 0] },
   },
   yAxis: {
@@ -85,7 +82,7 @@ const option = ref({
     name: "Wh/€",
     nameLocation: "middle",
     nameRotate: 90,
-    nameTextStyle: { padding: [0, 0, 20, 0] },
+    nameTextStyle: { padding: [0, 0, 10, 0] },
   },
   series: [
     {

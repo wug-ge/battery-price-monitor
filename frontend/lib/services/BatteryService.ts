@@ -24,7 +24,6 @@ export function filterTop20VolumetricEnergyDensity(batteries: Battery[]): Batter
 }
 
 export function filterTop20WhPerEuro(batteries: Battery[]): Battery[] {
-  console.log("blöb?")
   return batteries
     .sort((a, b) => b.whPerEuro - a.whPerEuro)
     .slice(0, 20);

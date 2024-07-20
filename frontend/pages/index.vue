@@ -4,7 +4,7 @@
     <div class="col-span-6 md:col-span-3 p-2 m-4 rounded-lg">
       <charts-energy-density-scatter title="Top 20 Volumetric Energy Density" :filter="filterTop20VolumetricEnergyDensity" />
     </div>
-    <div class="col-span-6 md:col-span-3 p-2 m-4 rounded-lg">
+    <div class="col-span-6 md:col-span-3 p-2 m-8 rounded-lg">
       <charts-watt-hours-by-euro-bar title="Top 20 Wh/€" :filter="filterTop20WhPerEuro" />
     </div>
   </div>
