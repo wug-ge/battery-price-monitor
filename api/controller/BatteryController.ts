@@ -1,9 +1,8 @@
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { getDataSource } from '../data-source'
 import { Battery } from '../models/Battery'
 import { BatteryPrice } from '../models/BatteryPrice'
 import { addLastPriceToBatteries, addStatsToBatteries } from '../services/BatteryService'
-import { Not, Raw } from 'typeorm'
 
 export class BatteryController {
   private batteryRepository = getDataSource().getRepository(Battery)
@@ -13,7 +12,7 @@ export class BatteryController {
     return await this.batteryRepository.find()
   }
 
-  async getBatteriesWitStats(req: Request) {
+  async getBatteriesWithStats(req: Request) {
     let batteries = await this.batteryRepository.find()
 
     // filter out weird not yet implemented battery sizes
@@ -36,5 +35,15 @@ export class BatteryController {
         return b[sort] - a[sort]
       })
       // .slice(0, limit)
+  }
+
+
+  async getBatteryById(req: Request, res: Response) {
+    const id = parseInt(req.params.id)
+    if (!id) {
+      res.status(400)
+      res.json({ error: 'invalid-id' })
+    }
+    return await this.batteryRepository.findOne({ where: { id }})
   }
 }

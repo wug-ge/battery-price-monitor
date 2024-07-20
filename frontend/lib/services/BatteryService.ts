@@ -7,6 +7,11 @@ export async function getAllBatteries(): Promise<Battery[]> {
   return SerializationHelper.toInstanceArray(Battery, data);
 }
 
+export async function getBatteryById(id: number): Promise<Battery> {
+  const res = await fetch(`/api/batteries/${id}`);
+  return SerializationHelper.toInstance(new Battery(), await res.json());
+}
+
 export function sortByWhPerEuro(batteries: Battery[]): Battery[] {
   return batteries.sort((a, b) => {
     return b.whPerEuro - a.whPerEuro;

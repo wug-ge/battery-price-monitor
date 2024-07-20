@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-primary flex mt-4">
+  <header class="bg-primary flex mt-4 justify-center">
     <div class="container bg-accent-1 rounded-xl p-4 m-2 md:m-0">
       <div class="md:flex">
         <div class="hidden md:inline-block rounded-xl bg-primary w-72 h-64 self-center text-center">
