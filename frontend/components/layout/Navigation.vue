@@ -5,7 +5,7 @@
     >
       <div class="flex items-center flex-no-shrink">
         <nuxt-link to="/">
-          <img src="~/assets/logo.svg" alt="BPM Logo" class="h-8 mr-2" />
+          <logo class="h-12 mr-2" />
         </nuxt-link>
       </div>
       <div class="block md:hidden">
@@ -28,14 +28,14 @@
       >
         <div class="text-sm md:flex-grow">
           <nuxt-link
-            to="/battery-finder"
-            class="border-x border-accent-1 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white px-2"
+            to="/18650"
+            class="border-x border-accent-1 text-base block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white px-2"
           >
-            Battery Finder
+            18650
           </nuxt-link>
           <nuxt-link
             to="/download"
-            class="border-r border-accent-1 px-2 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white"
+            class="border-r border-accent-1 text-base px-2 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white"
           >
             Download Data
           </nuxt-link>

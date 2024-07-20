@@ -9,14 +9,19 @@ import VChart from "vue-echarts";
 
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { ScatterChart } from "echarts/charts";
+import { BarChart } from "echarts/charts";
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
+  GridComponent,
 } from "echarts/components";
 import { useBatteryStore } from "~/stores/battery";
+import { sortByWhPerEuro } from "~/lib/services/BatteryService";
 import type { Battery } from "~/lib/models/Battery";
+
+const batteryStore = useBatteryStore();
+const storeBatteries = storeToRefs(batteryStore).batteries;
 
 interface Props {
   filter: (batteries: Battery[]) => Battery[];
@@ -25,43 +30,42 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const batteryStore = useBatteryStore();
-const storeBatteries = storeToRefs(batteryStore).batteries;
-
 const batteries = computed(() => {
   let batteries = JSON.parse(JSON.stringify(storeBatteries.value));
   if (props.filter) {
-    batteries = props.filter(batteries);
+    batteries = props.filter(storeBatteries.value);
   }
-  return batteries
+  return sortByWhPerEuro(batteries)
 });
+
 
 use([
   CanvasRenderer,
-  ScatterChart,
+  BarChart,
   TitleComponent,
   TooltipComponent,
   LegendComponent,
+  GridComponent,
 ]);
 
 const data = computed(() => {
-  return batteries.value.map((battery) => {
-    return {
-      name: `${battery.brand} ${battery.model}`,
-      value: [
-        Math.round(battery.volumetricEnergyDensity),
-        Math.round(battery.gravimetricEnergyDensity),
-      ],
-    };
-  });
+  return batteries.value.map(b => b.whPerEuro)
 });
 
 const option = ref({
   tooltip: {
-    trigger: "item",
-    formatter: function (params: any) {
-      return params.data.name;
-    },
+    trigger: 'axis',
+    axisPointer: {
+      // Use axis to trigger tooltip
+      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+    }
+  },
+  legend: {},
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
   },
   color: ["#5577FF"],
   title: {
@@ -69,24 +73,25 @@ const option = ref({
     left: "center",
   },
   xAxis: {
-    type: "value",
-    name: "Wh/l",
+    type: "category",
+    name: "Cell",
     nameLocation: "middle",
+    data: batteries.value.map(b => `${b.brand} ${b.model}`),
+    nameRotate: 180,
     nameTextStyle: { padding: [10, 0, 0, 0] },
-    // min: Math.round((Math.min(...batteries.value.map(b => b.volumetricEnergyDensity)) / 100)) * 100 - 100,
   },
   yAxis: {
     type: "value",
-    name: "Wh/kg",
+    name: "Wh/€",
     nameLocation: "middle",
     nameRotate: 90,
     nameTextStyle: { padding: [0, 0, 20, 0] },
   },
   series: [
     {
-      symbolSize: 5,
+      symbolSize: 20,
       data: data,
-      type: "scatter",
+      type: "bar",
     },
   ],
 });

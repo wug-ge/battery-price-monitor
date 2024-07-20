@@ -9,7 +9,7 @@ export const Routes: RoutesType = [{
   method: 'get',
   route: '/batteries/stats',
   controller: BatteryController,
-  action: 'getAllBatteriesWitStats',
+  action: 'getBatteriesWitStats',
 }]
 
 

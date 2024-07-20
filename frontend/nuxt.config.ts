@@ -6,6 +6,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      title: 'Batter Price Monitor',
       link: [{ rel: 'icon', type: 'image/png', href: '_nuxt/assets/logo.svg' }]    }
   },
 

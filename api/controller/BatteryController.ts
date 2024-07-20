@@ -12,15 +12,19 @@ export class BatteryController {
     return await this.batteryRepository.find()
   }
 
-  async getAllBatteriesWitStats(req: Request) {
+  async getBatteriesWitStats(req: Request) {
     let batteries = await this.batteryRepository.find()
 
     batteries = await addLastPriceToBatteries(batteries, this.batteryPriceRepository)
     const batteriesWithStats = addStatsToBatteries(batteries)
 
     let sort: 'gravimetricEnergyDensity' | 'volumetricEnergyDensity' | 'whPerEuro' | 'whPerEuroReduced' = req.query.sort as any || 'volumetricEnergyDensity'
-    return batteriesWithStats.sort((a, b) => {
-      return b[sort] - a[sort]
-    })
+    // let limit: number = typeof req.query.limit === 'string' ? parseInt(req.query.limit) || 20;
+    
+    return batteriesWithStats
+      .sort((a, b) => {
+        return b[sort] - a[sort]
+      })
+      // .slice(0, limit)
   }
 }
