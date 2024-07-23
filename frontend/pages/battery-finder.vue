@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <filter-battery-filter />
+    <filter-battery-filter :battery-filter="batteryFilter" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <battery-card
-        v-for="battery in batteries"
+        v-for="battery in filteredBatteries"
         :key="battery.id"
         :battery="battery"
       />
@@ -13,18 +13,22 @@
 </template>
 
 <script lang="ts" setup>
-import type { Battery } from '~/lib/models/Battery';
-import { getAllBatteries } from '~/lib/services/BatteryService';
+import { BatteryFilter, BatteryFilterService } from '~/lib/services/BatteryFilterService';
 
-const batteries = ref<Battery[]>([])
+const batteryFilter = ref<BatteryFilter>(new BatteryFilter())
+
+const batteryStore = useBatteryStore()
+const { loadAllBatteries } = batteryStore 
+const { batteries } = storeToRefs(batteryStore) 
 
 
-const loadBatteries = async() => {
-  batteries.value = await getAllBatteries()
-}
+const filteredBatteries = computed(() => {
+  const batteryFilterService = new BatteryFilterService(batteryFilter.value)
+  return batteryFilterService.filterBatteries(batteries.value)
+})
 
 onMounted(() => {
-  loadBatteries()
+  loadAllBatteries()
 })
 
 </script>

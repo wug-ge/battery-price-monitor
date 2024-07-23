@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: "Batteryy Price Monitor",
+      title: "Battery Price Monitor",
       link: [{ rel: "icon", type: "image/svg", href: "/logo.svg" }],
     },
   },

@@ -1,16 +1,16 @@
 <template>
-  <div class="flex items-center">
-    <div class="text-accent-1 font-semibold">Size:</div>
-    <bpm-select class="max-w-24" v-model="size" :options="sizeOptions" />
+  <div class="grid grid-cols-6">
+    <filter-battery-size-filter class="col-span-2" :battery-filter="batteryFilter" />
+    <filter-battery-brand-filter class="col-span-2" :battery-filter="batteryFilter" />
   </div>
 </template>
 
 <script lang="ts" setup>
-const size = ref<string>('all') 
+import type { BatteryFilter } from "~/lib/services/BatteryFilterService";
 
-const sizeOptions = [
-  { name: 'all', value: 'all', disabled: false },
-  { name: '18650', value: 'all', disabled: false },
-  { name: '21700', value: 'all', disabled: false },
-]
+interface Props {
+  batteryFilter: BatteryFilter;
+}
+
+defineProps<Props>();
 </script>

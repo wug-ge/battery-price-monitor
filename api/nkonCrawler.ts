@@ -59,10 +59,7 @@ async function saveNewBatteriesToDb(batteries: Battery[]) {
       existingBattery = await batteryRepository.save(battery);
     }
 
-    // update all fields here that got mapped wrong, might need to get updates regularly, scraped wrong and are empty,...
-    if (!battery.model) {
-      console.log("###########", battery.model)
-    }
+    // If crawler has error or something is wrong in database, edit it here
     await batteryRepository.update(existingBattery.id, {
       model: battery.model ? battery.model : existingBattery.model,
       chemistry: battery.chemistry ? battery.chemistry : existingBattery.chemistry,
