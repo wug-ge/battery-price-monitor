@@ -28,16 +28,16 @@
       >
         <div class="text-sm md:flex-grow">
           <nuxt-link
-            to="/18650"
+            to="/battery-finder"
             class="border-x border-accent-1 text-base block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white px-2"
           >
-            18650
+            Battery Finder
           </nuxt-link>
           <nuxt-link
-            to="/download"
+            to="/18650"
             class="border-r border-accent-1 text-base px-2 block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white"
           >
-            Download Data
+            18650
           </nuxt-link>
         </div>
         <div>
