@@ -35,14 +35,54 @@
           <td class="font-light">{{ battery.voltage }}V</td>
         </tr>
 
-        <tr>
+        <tr v-if="battery.minCapacity">
           <td class="font-semibold">Min. Capacity:</td>
           <td class="font-light">{{ battery.minCapacity }}mAh</td>
         </tr>
 
-        <tr>
+        <tr v-if="battery.typCapacity">
           <td class="font-semibold">Typ. capacity:</td>
           <td class="font-light">{{ battery.typCapacity }}mAh</td>
+        </tr>
+
+        <tr v-if="battery.dischargeCurrent">
+          <td class="font-semibold">Disarge Current:</td>
+          <td class="font-light">{{ battery.dischargeCurrent }}A</td>
+        </tr>
+
+        <tr v-if="battery.gravimetricEnergyDensity">
+          <td class="font-semibold">Grav. E. Density:</td>
+          <td class="font-light">{{ Math.round(battery.gravimetricEnergyDensity * 100) / 100 }}Wh/kg</td>
+        </tr>
+
+        <tr v-if="battery.volumetricEnergyDensity">
+          <td class="font-semibold">Vol. E. Density:</td>
+          <td class="font-light">{{ Math.round(battery.volumetricEnergyDensity * 100) / 100 }}Wh/l</td>
+        </tr>
+
+        <tr v-if="battery.whPerEuro">
+          <td class="font-semibold">Wh/€:</td>
+          <td class="font-light">{{ (Math.round(battery.whPerEuro * 100) / 100).toFixed(2) }}Wh/€</td>
+        </tr>
+
+        <tr v-if="battery.whPerEuroReduced">
+          <td class="font-semibold">Wh/€ Reduced:</td>
+          <td class="font-light">{{ (Math.round(battery.whPerEuroReduced * 100) / 100).toFixed(2) }}Wh/€</td>
+        </tr>
+
+        <tr v-if="battery.height">
+          <td class="font-semibold">Height:</td>
+          <td class="font-light">{{ battery.height }}mm</td>
+        </tr>
+
+        <tr v-if="battery.diameter">
+          <td class="font-semibold">Diameter:</td>
+          <td class="font-light">{{ battery.diameter }}mm</td>
+        </tr>
+
+        <tr v-if="battery.circuitProtection">
+          <td class="font-semibold">Circuit Protection:</td>
+          <td class="font-light">{{ battery.circuitProtection }}</td>
         </tr>
       </table>
     </div>
