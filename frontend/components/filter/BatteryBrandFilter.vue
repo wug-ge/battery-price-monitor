@@ -1,6 +1,12 @@
 <template>
-  <div class="text-accent-1 font-semibold">Brand:</div>
-  <bpm-select class="max-w-24" :options="brandOptions" v-model="batteryFilter.brandFilter" />
+  <!-- <bpm-select class="max-w-24" :options="brandOptions" v-model="batteryFilter.brandFilter" /> -->
+   <div>
+    <div class="text-accent-1 font-semibold">Brand:</div>
+    <bpm-multiselect :options="brandOptions" v-model="batteryFilter.brandFilter" />
+
+   </div>
+
+
 </template>
 
 <script lang="ts" setup>

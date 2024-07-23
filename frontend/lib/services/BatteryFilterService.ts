@@ -10,19 +10,25 @@ export class BatteryFilterService {
   }
   
   private filterBySize(battery: Battery) {
-    return this.batteryFilter.sizeFilter ? this.batteryFilter.sizeFilter === battery.size : true
-    // return this.batteryFilter.sizeFilter.includes(battery.size)
+    if (!this.batteryFilter.sizeFilter.length) return true
+    return this.batteryFilter.sizeFilter.find(filter => filter.value === battery.size)
   }
 
   private filterByBrand(battery: Battery) {
-    return this.batteryFilter.brandFilter ? this.batteryFilter.brandFilter === battery.brand : true
-    // return this.batteryFilter.sizeFilter.includes(battery.size)
+    if (!this.batteryFilter.brandFilter.length) return true
+    return this.batteryFilter.brandFilter.find(filter => filter.value === battery.brand)
   }
 
 }
 
 
 export class BatteryFilter {
-  sizeFilter = ''
-  brandFilter = ''
+  sizeFilter : Option[] = []
+  brandFilter: Option[] = []
+}
+
+type Option = {
+  name: string
+  value: string
+  disabled: boolean
 }

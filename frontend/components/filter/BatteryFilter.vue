@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-6">
+  <div class="max-w-md">
     <filter-battery-size-filter class="col-span-2" :battery-filter="batteryFilter" />
     <filter-battery-brand-filter class="col-span-2" :battery-filter="batteryFilter" />
   </div>
