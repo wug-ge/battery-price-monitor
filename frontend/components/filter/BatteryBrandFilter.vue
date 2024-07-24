@@ -11,6 +11,7 @@
 
 <script lang="ts" setup>
 import type { BatteryFilter } from '~/lib/services/BatteryFilterService';
+import type { Option } from '../BpmMultiselect.vue';
 
 interface Props {
   batteryFilter: BatteryFilter
@@ -21,7 +22,7 @@ const batteryStore = useBatteryStore()
 const { batteries } = storeToRefs(batteryStore)
 
 const brandOptions = computed(() => {
-  const options = [{ name: 'all', value: '', disabled: false }] 
+  const options: Option[] = [] 
 
   batteries.value.forEach((battery) => {
     if (!options.find((option) => option.value === battery.brand)) {

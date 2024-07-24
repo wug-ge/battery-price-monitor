@@ -5,6 +5,7 @@
         <filter-battery-filter :battery-filter="batteryFilter" />
       </div>
       <div class="col-span-6 md:col-span-4 px-4">
+        <battery-finder-battery-sorter class="col-span-6" :battery-filter="batteryFilter" />
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <battery-card
             v-for="battery in filteredBatteries"

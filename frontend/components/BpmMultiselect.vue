@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import VueMultiselect from "vue-multiselect";
 
-interface Option {
+export interface Option {
   name: string;
   value: string;
   disabled: boolean;
