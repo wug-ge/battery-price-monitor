@@ -14,7 +14,7 @@ export const getDataSource = () => {
       entities: [
         __dirname + "/models/*.ts",
       ],
-      synchronize: false,
+      synchronize: true,
       logging: false,
       migrations: ["migration/*.js"],
       charset: "utf8mb4",

@@ -14,6 +14,12 @@ export class Battery {
   @Column({ type: 'float' })
   weight!: number;
 
+  @Column({ type: 'float' })
+  length!: number;
+
+  @Column({ type: 'float' })
+  width!: number;
+
   @Column({ type: 'varchar', length: 255 })
   brand!: string;
 

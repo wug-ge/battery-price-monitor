@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { getDataSource } from "../data-source";
 import { Battery } from "../models/Battery";
 import { BatteryPrice } from "../models/BatteryPrice";
-import { calculateGravimetricEnergyDensity, calculateVolumetricEnergyDensityOfCylinder, calculateWhPerEuro } from '../services/MathHelper'
+import { calculateGravimetricEnergyDensity, calculateVolumetricEnergyDensityOfCylinder, calculateWhPerEuro, calculatePrismaticVolume } from '../services/MathHelper'
 
 export function addStatsToBatteries(batteries: Battery[]) {
   return batteries.map(battery => {
@@ -12,6 +12,7 @@ export function addStatsToBatteries(batteries: Battery[]) {
       gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, battery.voltage),
       whPerEuro: calculateWhPerEuro(battery.batteryPrices[0].price, battery.typCapacity, battery.voltage),
       whPerEuroReduced: calculateWhPerEuro(battery.batteryPrices[0].priceReduced, battery.typCapacity, battery.voltage),
+      prismaticVolume: calculatePrismaticVolume(battery.length, battery.width, battery.height),
     }
   })
 }
