@@ -14,7 +14,7 @@ services:
       - "traefik.http.routers.bpm-frontend.entrypoints=websecure"
   api:
     image: wugge/battery-price-monitor-api:latest
-    container_name: wugge-api
+    container_name: bpm-api
     restart: "unless-stopped"
     expose:
       - 3001
