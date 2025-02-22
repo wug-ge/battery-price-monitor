@@ -2,7 +2,7 @@
   <select
     @input="emitInput"
     :value="modelValue"
-    class="py-3 px-2 text-accent-2 bg-primary font-extrabold text-xl rounded w-full"
+    class="py-3 px-2 text-accent-2 bg-primary text-xl rounded w-full"
   >
     <option v-for="(option, i) in options" :key="i" :value="option.value" :disabled="option.disabled">
       {{ option.name }}

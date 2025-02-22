@@ -17,4 +17,5 @@ export const en = {
   whPerEuro: "Wh Per Euro",
   whPerEuroReduced: "Wh Per Euro Reduced",
   sortBy: "Sort By",
+  maxCurrent: "Max Current",
 }

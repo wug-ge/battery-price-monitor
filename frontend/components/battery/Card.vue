@@ -1,100 +1,58 @@
 <template>
-  <div class="col-span-1 bg-accent-1 rounded-xl p-4 mt-4 text-primary">
+  <div class="col-span-1 bg-accent-1 rounded-xl p-4 mt-4 text-primary text-sm">
     <div class="flex justify-center">
       <battery-logo class="w-32" />
     </div>
-    <div class="flex justify-center">
-      <table class="w-72">
-        <tr>
-          <td class="font-semibold">{{ $t("brand") }}:</td>
-          <td class="font-light">{{ battery.brand }}</td>
-        </tr>
 
-        <tr>
-          <td class="font-semibold">{{ $t('model') }}:</td>
-          <td class="font-light">{{ battery.model }}</td>
-        </tr>
+    <div class="font-semibold text-lg">{{ battery.brand }} {{ battery.model }}</div>
+    <div class="grid grid-cols-3">
+      <div class="flex items-center">
+        <Icon name="tabler:dimensions" />{{ battery.size }}
+      </div>
+      <div class="flex items-center">
+        <Icon name="carbon:chemistry" />{{ battery.chemistry }}
+      </div>
+      <div>
+        {{ Math.round(battery.volumetricEnergyDensity) }}Wh/l
+      </div>
+    </div>
 
-        <tr>
-          <td class="font-semibold">{{ $t('weight') }}:</td>
-          <td class="font-light">{{ battery.weight }}g</td>
-        </tr>
+    <div class="grid grid-cols-3">
+      <div class="flex items-center">
+        <Icon name="material-symbols:weight-outline" />{{ battery.weight }}g
+      </div>
+      <div class="flex items-center">
+        <Icon name="tabler:dimensions" />{{ battery.size }}
+      </div>
+      <div>
+        {{ Math.round(battery.gravimetricEnergyDensity) }}Wh/kg
+      </div>
+    </div>
+    <hr class="mx-1 my-2 opacity-70" />
+    <div class="grid grid-cols-3">
+      <div class="font-semibold">
+        Price/Wh
+      </div>
+      <div>
+        {{ (Math.round(battery.whPerEuro * 100) / 100).toFixed(2) }}Wh/€ 
+      </div>
+      <div v-if="battery.whPerEuroReduced" class="flex items-center">
+        <Icon name="mdi:discount" />{{ (Math.round(battery.whPerEuroReduced * 100) / 100).toFixed(2) }}Wh/€
+      </div>
+    </div>
 
-        <tr>
-          <td class="font-semibold">{{ $t('size') }}:</td>
-          <td class="font-light">{{ battery.size }}</td>
-        </tr>
+    <div class="grid grid-cols-3">
+      <div class="font-semibold col-span-2">
+        Capacity
+      </div>
+      <div>
+        {{ battery.typCapacity }}mAh
+      </div>
+    </div>
 
-        <tr>
-          <td class="font-semibold">{{ $t('chemistry') }}:</td>
-          <td class="font-light">{{ battery.chemistry }}</td>
-        </tr>
-
-        <tr>
-          <td class="font-semibold">{{ $t('voltage') }}:</td>
-          <td class="font-light">{{ battery.voltage }}V</td>
-        </tr>
-
-        <tr v-if="battery.minCapacity">
-          <td class="font-semibold">{{ $t('minCapacity') }}:</td>
-          <td class="font-light">{{ battery.minCapacity }}mAh</td>
-        </tr>
-
-        <tr v-if="battery.typCapacity">
-          <td class="font-semibold">{{ $t('typCapacity') }}:</td>
-          <td class="font-light">{{ battery.typCapacity }}mAh</td>
-        </tr>
-
-        <tr v-if="battery.dischargeCurrent">
-          <td class="font-semibold">{{ $t('dischargeCurrent') }}:</td>
-          <td class="font-light">{{ battery.dischargeCurrent }}A</td>
-        </tr>
-
-        <tr v-if="battery.gravimetricEnergyDensity">
-          <td class="font-semibold">{{ $t('gravimetricEnergyDensity') }}:</td>
-          <td class="font-light">
-            {{ Math.round(battery.gravimetricEnergyDensity * 100) / 100 }}Wh/kg
-          </td>
-        </tr>
-
-        <tr v-if="battery.volumetricEnergyDensity">
-          <td class="font-semibold">{{ $t('volumetricEnergyDensity') }}:</td>
-          <td class="font-light">
-            {{ Math.round(battery.volumetricEnergyDensity * 100) / 100 }}Wh/l
-          </td>
-        </tr>
-
-        <tr v-if="battery.whPerEuro">
-          <td class="font-semibold">{{ $t('whPerEuro') }}:</td>
-          <td class="font-light">
-            {{ (Math.round(battery.whPerEuro * 100) / 100).toFixed(2) }}Wh/€
-          </td>
-        </tr>
-
-        <tr v-if="battery.whPerEuroReduced">
-          <td class="font-semibold">{{ $t('whPerEuroReduced') }}:</td>
-          <td class="font-light">
-            {{
-              (Math.round(battery.whPerEuroReduced * 100) / 100).toFixed(2)
-            }}Wh/€
-          </td>
-        </tr>
-
-        <tr v-if="battery.height">
-          <td class="font-semibold">{{ $t('height') }}:</td>
-          <td class="font-light">{{ battery.height }}mm</td>
-        </tr>
-
-        <tr v-if="battery.diameter">
-          <td class="font-semibold">{{ $t('diameter') }}:</td>
-          <td class="font-light">{{ battery.diameter }}mm</td>
-        </tr>
-
-        <tr v-if="battery.circuitProtection">
-          <td class="font-semibold">{{ $t('circuitProtection') }}:</td>
-          <td class="font-light">{{ battery.circuitProtection }}</td>
-        </tr>
-      </table>
+    <div v-if="battery.dischargeCurrent" class="grid grid-cols-3">
+      <div class="font-semibold col-span-2">{{ $t('maxCurrent') }}</div>
+      <div>{{ battery.dischargeCurrent }}A</div>
     </div>
   </div>
 </template>

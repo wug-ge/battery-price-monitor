@@ -3,7 +3,7 @@
     class="
       border border-black border-solid
       rounded
-      text-xl uppercase font-extrabold text-accent-1 leading-5
+      text-xl uppercase text-accent-1 leading-5
       relative
       cursor-pointer
       flex items-center justify-center
@@ -12,10 +12,10 @@
       "
     @click="selected ? selected = false : selected = true"  
   >
-    <div class="pr-5 z-10 transition-all relative left-3" :class="{ '!text-primary text-center': !selected }">
+    <div class="w-full text-center z-10 transition-all relative left-3" :class="{ '!text-primary text-center': !selected }">
       <slot name="optionOne"></slot>
     </div>
-    <div class="pl-5 z-10 transition-all relative right-3" :class="{ '!text-primary': selected }">
+    <div class="w-full text-center z-10 transition-all relative right-3" :class="{ '!text-primary': selected }">
       <slot name="optionTwo"></slot>
     </div>
 

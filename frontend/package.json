@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/icon": "^1.10.3",
     "@nuxtjs/i18n": "^8.3.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
@@ -21,6 +22,7 @@
     "vue-multiselect": "^3.0.0"
   },
   "devDependencies": {
+    "@iconify-json/material-symbols": "^1.2.14",
     "sass": "^1.77.8"
   }
 }

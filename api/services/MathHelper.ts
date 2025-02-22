@@ -14,7 +14,10 @@ export function calculateVolumetricEnergyDensityOfCylinder(
   const heightInDm = height / 100;
   const radiusInDm = radius / 100;
   const totalEnergy = ((mAh / 1000) * voltage)
-  return  totalEnergy / (Math.PI * Math.pow(radiusInDm, 2) * heightInDm);
+
+  if (heightInDm===0.647 && radiusInDm===0.0895)
+    console.log(heightInDm, radiusInDm, totalEnergy, totalEnergy, voltage)
+  return totalEnergy / (Math.PI * Math.pow(radiusInDm, 2) * heightInDm);
 }
 
 /**

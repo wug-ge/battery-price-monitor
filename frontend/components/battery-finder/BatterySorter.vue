@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-6 justify-between">
+  <div class="mb-4">
     <div class="col-span-2 flex items-center">
       <div class="text-accent-1 font-semibold w-24">Sort by:</div>
       <bpm-select :options="sortOptions" v-model="batteryFilter.sortBy" />

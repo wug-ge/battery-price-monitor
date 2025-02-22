@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/i18n"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/i18n", "@nuxt/icon"],
 
   app: {
     head: {
@@ -17,6 +17,11 @@ export default defineNuxtConfig({
       "vue-echarts",
       "resize-detector", // needed for echarts, see https://github.com/nuxt/nuxt/issues/14553#issuecomment-1934042981
     ],
+  },
+
+
+  icon: {
+    localApiEndpoint: "/_nuxt_icon",
   },
 
   routeRules: {
