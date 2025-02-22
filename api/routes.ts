@@ -1,4 +1,5 @@
 import { BatteryController } from "./controller/BatteryController"
+import { StatisticController } from "./controller/StatisticController"
 
 export const Routes: RoutesType = [{
   method: 'get',
@@ -15,9 +16,12 @@ export const Routes: RoutesType = [{
   route: '/batteries/:id',
   controller: BatteryController,
   action: 'getBatteryById',
+}, {
+  method: 'get',
+  route: '/statistic/prices',
+  controller: StatisticController,
+  action: 'getPriceForWhInPeriod',
 }]
-
-
 
 export type RoutesType = {
   method: string,

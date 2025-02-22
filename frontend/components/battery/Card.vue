@@ -57,7 +57,7 @@
 
 
     <div v-if="battery.createdAt" class="text-xs italic absolute bottom-0 left-2 opacity-70">
-      Updated: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}
+      Updated: {{ dateTimeToEuropeString(new Date(battery.batteryPrices[0].updatedAt)) }}
     </div>
     <div v-if="battery.createdAt" class="text-xs italic absolute bottom-0 right-2 opacity-70">
       Created: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}

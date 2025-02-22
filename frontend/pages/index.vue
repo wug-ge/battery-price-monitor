@@ -7,6 +7,9 @@
     <div class="col-span-6 md:col-span-3 p-2 m-8 rounded-lg">
       <charts-watt-hours-by-euro-bar title="Top 20 Wh/€" :filter="filterTop20WhPerEuro" />
     </div>
+    <div class="col-span-6 md:col-span-3 p-2 m-8 rounded-lg">
+      <charts-best-price-per-day  class="col-span-6 md:col-span-3 p-2 m-4 rounded-lg" />
+    </div>
   </div>
 </template>
 
