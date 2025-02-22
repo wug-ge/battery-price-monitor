@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-1 bg-accent-1 rounded-xl p-4 mt-4 text-primary text-sm">
+  <div class="col-span-1 bg-accent-1 rounded-xl p-4 mt-4 text-primary text-sm relative">
     <div class="flex justify-center">
       <battery-logo class="w-32" />
     </div>
@@ -54,11 +54,16 @@
       <div class="font-semibold col-span-2">{{ $t('maxCurrent') }}</div>
       <div>{{ battery.dischargeCurrent }}A</div>
     </div>
+
+    <div v-if="battery.createdAt" class="text-xs italic absolute bottom-0 right-2 opacity-70">
+      Listed since: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { Battery } from "~/lib/models/Battery";
+import { dateTimeToEuropeString } from "~/lib/utils/DateUtils";
 
 interface Props {
   battery: Battery;

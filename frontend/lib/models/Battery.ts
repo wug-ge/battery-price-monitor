@@ -22,4 +22,5 @@ export class Battery {
   volumetricEnergyDensity = 0;
   whPerEuro = 0;
   whPerEuroReduced = 0;
+  createdAt = ''
 }
