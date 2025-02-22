@@ -3,7 +3,6 @@ import { Battery } from "./models/Battery";
 import { getDataSource } from "./data-source";
 import { BatteryPrice } from "./models/BatteryPrice";
 import { getSourcer } from "./services/SourcerService";
-import { isKeyOfBattery } from "./services/BatteryService";
 
 const NKON_SOURCER = "nkon"
 

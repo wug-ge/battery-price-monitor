@@ -3,6 +3,7 @@ import { getDataSource } from '../data-source'
 import { Battery } from '../models/Battery'
 import { BatteryPrice } from '../models/BatteryPrice'
 import { addLastPriceToBatteries, addStatsToBatteries } from '../services/BatteryService'
+import { Not } from 'typeorm'
 
 export class BatteryController {
   private batteryRepository = getDataSource().getRepository(Battery)
@@ -13,8 +14,7 @@ export class BatteryController {
   }
 
   async getBatteriesWithStats(req: Request) {
-    let batteries = await this.batteryRepository.find()
-
+    let batteries = await this.batteryRepository.find({ where: { model: Not('case')}}) // exclude battery cases since they are also listed as batteries
     // filter out weird not yet implemented battery sizes
     const notAllowedSizes = [
       '',          // no size found
