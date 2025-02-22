@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import { getDataSource } from '../data-source'
+import { ApiDataSource } from '../data-source'
 import { Battery } from '../models/Battery'
 import { BatteryPrice } from '../models/BatteryPrice'
 import { addLastPriceToBatteries, addStatsToBatteries } from '../services/BatteryService'
 import { Not } from 'typeorm'
 
 export class BatteryController {
-  private batteryRepository = getDataSource().getRepository(Battery)
-  private batteryPriceRepository = getDataSource().getRepository(BatteryPrice)
+  private batteryRepository = ApiDataSource.getRepository(Battery)
+  private batteryPriceRepository = ApiDataSource.getRepository(BatteryPrice)
 
   async getAllBatteries() {
     return await this.batteryRepository.find()

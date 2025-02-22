@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 import { Battery } from "./models/Battery";
-import { getDataSource } from "./data-source";
+import { ApiDataSource } from "./data-source";
 import { BatteryPrice } from "./models/BatteryPrice";
 import { getSourcer } from "./services/SourcerService";
 
@@ -50,8 +50,8 @@ async function getAllBatteries(page: string) {
 }
 
 async function saveNewBatteriesToDb(batteries: Battery[]) {
-  const batteryRepository = getDataSource().getRepository(Battery);
-  const batteryPriceRepository = getDataSource().getRepository(BatteryPrice);
+  const batteryRepository = ApiDataSource.getRepository(Battery);
+  const batteryPriceRepository = ApiDataSource.getRepository(BatteryPrice);
   for (const battery of batteries) {
     let existingBattery = await batteryRepository.findOne({ where: {eanGtin: battery.eanGtin }});
     if (!existingBattery) {

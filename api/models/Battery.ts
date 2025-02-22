@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, DeleteDateColumn, UpdateDateColumn, CreateDateColumn } from "typeorm";
 import { BatteryPrice } from "./BatteryPrice";
 
 @Entity({ name: 'batteries' })
 export class Battery {
-  [key: string]: string | number | BatteryPrice[] | undefined;
+  [key: string]: string | number | BatteryPrice[] | Date | undefined;
 
   @PrimaryGeneratedColumn()
   id!: number;
@@ -50,12 +50,14 @@ export class Battery {
   @Column({ type: 'float' })
   diameter!: number;
 
-  @Column({ type: 'timestamp' })
-  createdAt!: string;
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt!: Date;
 
-  @Column({ type: 'timestamp' })
-  updatedAt!: string;
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  updatedAt!: Date;
 
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @OneToMany(() => BatteryPrice, batteryPrice => batteryPrice.battery)
   batteryPrices!: BatteryPrice[];

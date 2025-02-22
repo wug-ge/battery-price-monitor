@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { getDataSource } from "../data-source";
+import { ApiDataSource } from "../data-source";
 import { Battery } from "../models/Battery";
 import { BatteryPrice } from "../models/BatteryPrice";
 import { calculateGravimetricEnergyDensity, calculateVolumetricEnergyDensityOfCylinder, calculateWhPerEuro } from '../services/MathHelper'
@@ -11,7 +11,7 @@ export function addStatsToBatteries(batteries: Battery[]) {
       volumetricEnergyDensity: calculateVolumetricEnergyDensityOfCylinder(battery.height, battery.diameter / 2, battery.typCapacity, battery.voltage),
       gravimetricEnergyDensity: calculateGravimetricEnergyDensity(battery.weight, battery.typCapacity, battery.voltage),
       whPerEuro: calculateWhPerEuro(battery.batteryPrices[0].price, battery.typCapacity, battery.voltage),
-      whPerEuroReduced: calculateWhPerEuro(battery.batteryPrices[0].priceReduced, battery.typCapacity, battery.voltage),
+      whPerEuroReduced: calculateWhPerEuro(battery.batteryPrices[0].priceReduced || 0, battery.typCapacity, battery.voltage),
     }
   })
 }

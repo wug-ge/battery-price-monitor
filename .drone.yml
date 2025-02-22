@@ -32,6 +32,32 @@ steps:
   when:
     branch:
       - main
+
+- name: run_migrations
+  image: node:22  # or your API image if typeorm is inside
+  environment:
+    DB_HOST:
+      from_secret: DB_HOST
+    DB_NAME:
+      from_secret: DB_NAME
+    DB_USER:
+      from_secret: DB_USER
+    DB_PASSWORD:
+      from_secret: DB_PASSWORD
+  commands:
+    - cd api  # navigate to API directory if needed
+    - npm install     # or yarn install if you use yarn
+    - npm run build   # if you have a build step
+    - npx typeorm-ts-node-commonjs migration:run -d data-source.ts
+  depends_on:
+    - publish_api
+  when:
+    branch:
+      - main
+    event:
+      - push
+
+
 - name: deploy
   image: docker/compose
   when:

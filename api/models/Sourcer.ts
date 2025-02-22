@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BatteryPrice } from "./BatteryPrice";
 
 @Entity({ name: 'sourcers' })
@@ -9,11 +9,11 @@ export class Sourcer {
   @Column({ type: 'varchar', length: 255 })
   name!: string;
 
-  @Column({ type: 'timestamp' })
-  createdAt!: string;
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt!: Date;
 
-  @Column({ type: 'timestamp' })
-  updatedAt!: string;
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  updatedAt!: Date;
 
   @OneToMany(() => BatteryPrice, batteryPrice => batteryPrice.battery)
   batteryPrices!: BatteryPrice[];

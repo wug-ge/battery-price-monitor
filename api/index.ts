@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import * as path from 'path'
-import { getDataSource } from "./data-source";
+import { ApiDataSource } from "./data-source";
 import * as cron from 'node-cron'
 import { initCrawling } from './nkonCrawler';
 import 'reflect-metadata'
@@ -23,7 +23,6 @@ function initCron() {
 
 async function initDB() {
     // Initiate DB
-    const ApiDataSource = getDataSource()
     await ApiDataSource.initialize()
 }
 
