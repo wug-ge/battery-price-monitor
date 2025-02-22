@@ -37,7 +37,9 @@ steps:
   image: node:22  # or your API image if typeorm is inside
   environment:
     DB_HOST:
-      from_secret: DB_HOST
+      from_secret: DB_HOST_OUTSIDE
+    DB_PORT:
+      from_secret: DB_PORT_OUTSIDE
     DB_NAME:
       from_secret: DB_NAME
     DB_USER:
