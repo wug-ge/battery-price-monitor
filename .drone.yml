@@ -49,7 +49,6 @@ steps:
   commands:
     - cd api  # navigate to API directory if needed
     - npm install
-    - env
     - npx typeorm-ts-node-commonjs migration:run -d data-source.ts
   depends_on:
     - publish_api
