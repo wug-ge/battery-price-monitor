@@ -23,4 +23,5 @@ export class Battery {
   whPerEuro = 0;
   whPerEuroReduced = 0;
   createdAt = ''
+  updatedAt = ''
 }

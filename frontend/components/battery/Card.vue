@@ -55,8 +55,12 @@
       <div>{{ battery.dischargeCurrent }}A</div>
     </div>
 
+
+    <div v-if="battery.createdAt" class="text-xs italic absolute bottom-0 left-2 opacity-70">
+      Updated: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}
+    </div>
     <div v-if="battery.createdAt" class="text-xs italic absolute bottom-0 right-2 opacity-70">
-      Listed since: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}
+      Created: {{ dateTimeToEuropeString(new Date(battery.createdAt)) }}
     </div>
   </div>
 </template>
