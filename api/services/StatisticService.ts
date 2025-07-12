@@ -47,7 +47,7 @@ type ProcessedBattery = {
   batteryPriceId: number;
   batteryId: number;
   brand: string;
-  model: string;
+  model: string | null;
   price: number;
   mAh: number;
   voltage: number;

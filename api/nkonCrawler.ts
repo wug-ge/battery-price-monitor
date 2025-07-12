@@ -50,6 +50,8 @@ async function getAllBatteries(page: string) {
 }
 
 async function saveNewBatteriesToDb(batteries: Battery[]) {
+  console.info(`Saving ${JSON.stringify(batteries)} batteries to database`);
+
   const batteryRepository = ApiDataSource.getRepository(Battery);
   const batteryPriceRepository = ApiDataSource.getRepository(BatteryPrice);
   for (const battery of batteries) {
@@ -82,9 +84,7 @@ async function getBatteryFromLink(link: string): Promise<Battery> {
   battery.weight = parseFloat($('#product-attribute-specs-table tr:contains("Weight") td').text().trim());
   battery.brand = $('#product-attribute-specs-table tr:contains("Brand") td').text().trim();
   battery.model = $('#product-attribute-specs-table tr:contains("Model") td').text().trim() || $(".product-name").text().trim().split(' ').length > 1 ? $(".product-name").text().trim().split(' ')[1] : '';
-  if (!battery.model) {
-    console.log($(".product-name").text().trim().split(' ')[1])
-  }
+  
   battery.size = $('#product-attribute-specs-table tr:contains("Size") td').text().trim();
   battery.chemistry = $('#product-attribute-specs-table tr:contains("chemistry") td').text().trim();
   battery.voltage = parseFloat($('#product-attribute-specs-table tr:contains("Voltage") td').text().trim().replace(/V/g, ''));

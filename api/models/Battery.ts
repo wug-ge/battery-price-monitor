@@ -3,7 +3,7 @@ import { BatteryPrice } from "./BatteryPrice";
 
 @Entity({ name: 'batteries' })
 export class Battery {
-  [key: string]: string | number | BatteryPrice[] | Date | undefined;
+  [key: string]: string | number | BatteryPrice[] | Date | undefined | null;
 
   @PrimaryGeneratedColumn()
   id!: number;
@@ -18,7 +18,7 @@ export class Battery {
   brand!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  model!: string;
+  model!: string | null;
 
   @Column({ type: 'varchar', length: 255 })
   size!: string;
