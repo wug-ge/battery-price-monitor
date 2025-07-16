@@ -1,4 +1,4 @@
-import { en } from "./assets/locales/en";
+import { en } from "./app/assets/locales/en";
 
 export default defineI18nConfig(() => ({
   legacy: false,

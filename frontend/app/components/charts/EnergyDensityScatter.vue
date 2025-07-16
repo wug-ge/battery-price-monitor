@@ -15,8 +15,8 @@ import {
   TooltipComponent,
   LegendComponent,
 } from "echarts/components";
-import { useBatteryStore } from "~/stores/battery";
-import type { Battery } from "~/lib/models/Battery";
+import { useBatteryStore } from "@/stores/battery";
+import type { Battery } from "@/lib/models/Battery";
 
 interface Props {
   filter: (batteries: Battery[]) => Battery[];

@@ -15,7 +15,6 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.1",
     "echarts": "^5.5.1",
-    "nuxt": "^3.12.3",
     "pinia": "^2.1.7",
     "vue": "^3.4.33",
     "vue-echarts": "^6.7.3",
@@ -23,6 +22,7 @@
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.14",
+    "nuxt": "^4.0.0",
     "sass": "^1.77.8"
   }
 }
