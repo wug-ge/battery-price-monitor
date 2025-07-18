@@ -89,7 +89,12 @@ function cacheMiddleware(ttl = 60, redis: ReturnType<typeof createClient>) {
 }
 
 async function setupCaching(): Promise<ReturnType<typeof createClient>> {
-  const redis = createClient()
+  const redis = createClient({
+    socket: {
+      host: process.env.REDIS_HOST || 'redis',
+      port: parseInt(process.env.REDIS_PORT || '6379', 10),      
+    }
+  })
   redis.on('error', (err: Error) => console.error('Redis Client Error', err));
   await redis.connect();
   return redis;
