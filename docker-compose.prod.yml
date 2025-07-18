@@ -44,6 +44,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - bpm_db_volume:/var/lib/mysql
+  redis:
+    image: redis:8
 
 
 volumes:

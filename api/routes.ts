@@ -1,7 +1,7 @@
 import { BatteryController } from "./controller/BatteryController"
 import { StatisticController } from "./controller/StatisticController"
 
-export const Routes: RoutesType = [{
+export const Routes: Route[] = [{
   method: 'get',
   route: '/batteries',
   controller: BatteryController,
@@ -21,11 +21,16 @@ export const Routes: RoutesType = [{
   route: '/statistic/prices',
   controller: StatisticController,
   action: 'getPriceForWhInPeriod',
+  cache: {
+    expire: 60 * 60, // 1 hour
+    type: 'always',
+  },
 }]
 
-export type RoutesType = {
+export type Route = {
   method: string,
   route: string,
   controller: any,
   action: string,
-}[]
+  cache?: { expire?: number, type: 'always' | 'per-auth-cookie' | 'per-url' },
+}

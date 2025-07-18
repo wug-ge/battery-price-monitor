@@ -1,12 +1,15 @@
 import * as http from "http";
 import * as os from "os";
 import express, { Request, Response, NextFunction, Application } from "express";
-import { Routes } from "./routes";
+import { Route, Routes } from "./routes";
+import { createClient } from "redis";
 
-export function init() {
+
+export async function init() {
   const app: Application = express();
 
-  setupRouter(app);
+  const redis = await setupCaching();
+  setupRouter(app, redis);
   setupDefaultRoutes(app);
 
   app.listen(process.env.EXPRESS_PORT || 3000, () => {
@@ -27,10 +30,11 @@ function setupDefaultRoutes(app: Application) {
   });
 }
 
-function setupRouter(app: Application) {
+function setupRouter(app: Application, redis: ReturnType<typeof createClient>) {
   Routes.forEach((route) => {
     (app as any)[route.method](
       route.route,
+      cache(route, redis),
       (req: Request, res: Response, next: NextFunction) => {
         const result = new (route.controller as any)()[route.action](
           req,
@@ -61,3 +65,33 @@ function setupRouter(app: Application) {
     );
   });
 }
+
+function cache(route: Route, redis: ReturnType<typeof createClient>) {
+  if (route.cache) {
+    return cacheMiddleware(route.cache.expire || 60, redis);
+  } else {
+    return async (req: Request, res: Response, next: NextFunction) => next();
+  }
+}
+
+function cacheMiddleware(ttl = 60, redis: ReturnType<typeof createClient>) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const key = `cache:${req.originalUrl}`;
+    const data = await redis.get(key);
+    if (data) return res.json(JSON.parse(data));
+    const originalJson = res.json.bind(res);
+    res.json = (body) => {
+      redis.set(key, JSON.stringify(body), { EX: ttl });
+      return originalJson(body);
+    };
+    next();
+  }
+}
+
+async function setupCaching(): Promise<ReturnType<typeof createClient>> {
+  const redis = createClient()
+  redis.on('error', (err: Error) => console.error('Redis Client Error', err));
+  await redis.connect();
+  return redis;
+}
+
