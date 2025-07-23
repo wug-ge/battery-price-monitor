@@ -5,6 +5,7 @@ import * as cron from 'node-cron'
 import { initCrawling } from './nkonCrawler';
 import 'reflect-metadata'
 import { init as initExpress } from './express';
+import { warmCache } from './lib/utils/CacheWarmer';
 
 async function main() {
   dotenv.config({ path: path.resolve(process.cwd() + '/..', '.env') })
@@ -14,11 +15,17 @@ async function main() {
 }
 
 function initCron() {
+  warmCache()
   cron.schedule('5 * * * *', async () => {
-    console.log('Running cron job')
+    console.log('Init crawling')
     initCrawling()
   })
   initCrawling()
+
+  cron.schedule('12 * * * *', async () => {
+    console.log('Warming up cache')
+    warmCache()
+  })
 }
 
 async function initDB() {

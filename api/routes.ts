@@ -24,6 +24,7 @@ export const Routes: Route[] = [{
   cache: {
     expire: 60 * 60, // 1 hour
     type: 'always',
+    keepWarm: true,
   },
 }]
 
@@ -32,5 +33,9 @@ export type Route = {
   route: string,
   controller: any,
   action: string,
-  cache?: { expire?: number, type: 'always' | 'per-auth-cookie' | 'per-url' },
+  cache?: { 
+    expire?: number,
+    type: 'always' | 'per-auth-cookie' | 'per-url',
+    keepWarm?: boolean
+  },
 }

@@ -34,7 +34,7 @@ steps:
       - main
 
 - name: run_migrations
-  image: node:22  # or your API image if typeorm is inside
+  image: node:24  # or your API image if typeorm is inside
   environment:
     DB_HOST:
       from_secret: DB_HOST_OUTSIDE
@@ -46,6 +46,8 @@ steps:
       from_secret: DB_USER
     DB_PASSWORD:
       from_secret: DB_PASSWORD
+    API_PROD_URL:
+      from_secret: API_PROD_URL
   commands:
     - cd api  # navigate to API directory if needed
     - npm install
@@ -82,6 +84,8 @@ steps:
       from_secret: DB_USER
     DB_PASSWORD:
       from_secret: DB_PASSWORD
+    API_PROD_URL:
+      from_secret: API_PROD_URL
   commands:
   - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
   - docker-compose -f docker-compose.prod.yml down && docker-compose -f docker-compose.prod.yml pull && docker-compose -f docker-compose.prod.yml up -d
