@@ -15,13 +15,13 @@ async function main() {
 }
 
 function initCron() {
-  warmCache()
   cron.schedule('5 * * * *', async () => {
     console.log('Init crawling')
     initCrawling()
   })
   initCrawling()
 
+  warmCache()
   cron.schedule('12 * * * *', async () => {
     console.log('Warming up cache')
     warmCache()
