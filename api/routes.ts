@@ -35,7 +35,7 @@ export type Route = {
   action: string,
   cache?: { 
     expire?: number,
-    type: 'always' | 'per-auth-cookie' | 'per-url',
+    type: 'always' | 'per-auth-token' | 'per-request-url',
     keepWarm?: boolean
   },
 }

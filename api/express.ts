@@ -1,15 +1,22 @@
 import * as http from "http";
 import * as os from "os";
 import express, { Request, Response, NextFunction, Application } from "express";
-import { Route, Routes } from "./routes";
-import { createClient } from "redis";
+import { Routes } from "./routes";
+import { cache, setupCache } from "express-redis-simple-cache";
 
 
 export async function init() {
   const app: Application = express();
 
-  const redis = await setupCaching();
-  setupRouter(app, redis);
+  // const redis = await setupCaching();
+  await setupCache({
+    socket: {
+      host: process.env.REDIS_HOST || 'redis',
+      port: parseInt(process.env.REDIS_PORT || '6379', 10),      
+    }
+  }, 'debug')
+
+  setupRouter(app);
   setupDefaultRoutes(app);
 
   app.listen(process.env.EXPRESS_PORT || 3000, () => {
@@ -30,11 +37,11 @@ function setupDefaultRoutes(app: Application) {
   });
 }
 
-function setupRouter(app: Application, redis: ReturnType<typeof createClient>) {
+function setupRouter(app: Application) {
   Routes.forEach((route) => {
     (app as any)[route.method](
       route.route,
-      cache(route, redis),
+      cache(route),
       (req: Request, res: Response, next: NextFunction) => {
         const result = new (route.controller as any)()[route.action](
           req,
@@ -65,38 +72,3 @@ function setupRouter(app: Application, redis: ReturnType<typeof createClient>) {
     );
   });
 }
-
-function cache(route: Route, redis: ReturnType<typeof createClient>) {
-  if (route.cache) {
-    return cacheMiddleware(route.cache.expire || 60, redis);
-  } else {
-    return async (req: Request, res: Response, next: NextFunction) => next();
-  }
-}
-
-function cacheMiddleware(ttl = 60, redis: ReturnType<typeof createClient>) {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const key = `cache:${req.originalUrl}`;
-    const data = await redis.get(key);
-    if (data) return res.json(JSON.parse(data));
-    const originalJson = res.json.bind(res);
-    res.json = (body) => {
-      redis.set(key, JSON.stringify(body), { EX: ttl });
-      return originalJson(body);
-    };
-    next();
-  }
-}
-
-async function setupCaching(): Promise<ReturnType<typeof createClient>> {
-  const redis = createClient({
-    socket: {
-      host: process.env.REDIS_HOST || 'redis',
-      port: parseInt(process.env.REDIS_PORT || '6379', 10),      
-    }
-  })
-  redis.on('error', (err: Error) => console.error('Redis Client Error', err));
-  await redis.connect();
-  return redis;
-}
-
