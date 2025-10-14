@@ -3,6 +3,9 @@ version: '3.2'
 services:
   web:
     image: wugge/battery-price-monitor-frontend:latest
+    networks:
+      - internal
+      - traefik
     restart: "unless-stopped"
     expose:
       - 3000
@@ -14,7 +17,9 @@ services:
       - "traefik.http.routers.bpm-frontend.entrypoints=websecure"
   api:
     image: wugge/battery-price-monitor-api:latest
-    container_name: bpm-api
+    networks:
+      - internal
+      - traefik
     restart: "unless-stopped"
     expose:
       - 3001
@@ -38,6 +43,8 @@ services:
     image: mariadb:latest
     ports:
       - ${PUBLIC_DB_PORT:-3886}:3306
+    networks:
+      - internal
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -47,13 +54,15 @@ services:
       - bpm_db_volume:/var/lib/mysql
   redis:
     image: redis:8
+    networks:
+      - internal
 
 
 volumes:
   bpm_db_volume:
 
 networks:
-  default:
-    external:
-      name:
-        traefik_default
+  internal:
+  traefik:
+    external: true
+    name: traefik_default
