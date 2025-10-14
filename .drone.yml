@@ -62,7 +62,7 @@ steps:
 
 
 - name: deploy
-  image: docker/compose
+  image: docker:28-cli
   when:
     branch:
       - main
