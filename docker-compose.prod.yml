@@ -1,3 +1,4 @@
+name: battery-price-monitor
 services:
   web:
     image: wugge/battery-price-monitor-frontend:latest
