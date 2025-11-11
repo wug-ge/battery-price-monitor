@@ -62,7 +62,7 @@ steps:
 
 
 - name: deploy
-  image: docker:28-cli
+  image: docker:29-cli
   when:
     branch:
       - main
