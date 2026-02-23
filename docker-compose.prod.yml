@@ -10,7 +10,7 @@ services:
       - 3000
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik_default"
+      - "traefik.docker.network=traefik_proxy"
       - "traefik.http.routers.bpm-frontend.rule=Host(`bpm.wug.ge`)"
       - "traefik.http.services.bpm-frontend.loadbalancer.server.port=3000"
       - "traefik.http.routers.bpm-frontend.tls=true"
@@ -32,7 +32,7 @@ services:
       EXPRESS_PORT: 3001
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik_default"
+      - "traefik.docker.network=traefik_proxy"
       - "traefik.http.routers.bpm-api.rule=Host(`bpm.wug.ge`) && PathPrefix(`/api`)"
       - "traefik.http.services.bpm-api.loadbalancer.server.port=3001"
       - "traefik.http.routers.bpm-api.middlewares=bpm-api"
@@ -66,4 +66,4 @@ networks:
   internal: {}
   traefik:
     external: true
-    name: traefik_default
+    name: traefik_proxy
